@@ -22,14 +22,14 @@ public class stress_test {
 	{
 		System.out.printf("-> Checking algorithm complexity of values ");
 		
-		int run_count = 35;
+		int run_count = 40;
 		long runtime[] = new long[run_count];
 	
 		for(int x = 1; x<=run_count; x++)
 		{
 			runtime[x-1] = meanRunTimeValues(5, 1500*x, 100);
-			//System.out.print(".");
-			System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
+			System.out.print(".");
+			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
 		}
 		
 		System.out.println("done!");
@@ -250,8 +250,6 @@ public class stress_test {
 		ls[3] = 0;
 		for(int x = 0; x<time.length; x++)
 			ls[3] += Math.pow(time[x] - (a*(x+1)*(x+1)), 2);
-		
-		System.out.println(Arrays.toString(ls));
 		
 		min_index = 0;
 		for(int x= 1; x<ls.length; x++)
