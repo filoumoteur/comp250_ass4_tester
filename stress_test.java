@@ -9,12 +9,13 @@ public class stress_test {
 	
 	public static void main(String[] args)
 	{
-		//testPutGet();
-		//checkSorting(200, 30); // checks sorting order
+		testPutGet();
+		checkSorting(200, 30); // checks sorting order
 		
-		//checkAlgorithmComplexityFastSort(); // checks fastSort algorithm complexity
-		//checkAlgorithmComplexitySlowSort(); // same engine, checks slowSort algorithm complexity
-		//checkAlgorithmComplexityPut();
+		
+		checkAlgorithmComplexityFastSort(); // checks fastSort algorithm complexity
+		checkAlgorithmComplexitySlowSort(); // same engine, checks slowSort algorithm complexity
+		checkAlgorithmComplexityPut();
 		checkAlgorithmComplexityValues();
     }
 	
@@ -27,6 +28,7 @@ public class stress_test {
 	
 		for(int x = 1; x<=run_count; x++)
 		{
+			//System.gc();
 			runtime[x-1] = meanRunTimeValues(5, 1500*x, 100);
 			System.out.print(".");
 			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
@@ -46,6 +48,7 @@ public class stress_test {
 		
 		for(int x = 0; x<numLoops; x++)
 		{
+			System.gc();
 			time_in = System.currentTimeMillis();
 			ArrayList<String> values = testHash.values();
 			time_used[x] = System.currentTimeMillis() - time_in;
@@ -116,6 +119,7 @@ public class stress_test {
 
 		for(int x = 1; x<=run_count; x++)
 		{
+			//System.gc();
 			runtime[x-1] = meanRunTimePut(10*x, 5000);
 			System.out.print(".");
 			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
@@ -133,6 +137,7 @@ public class stress_test {
 		
 		for(int y = 0; y<numLoops; y++)
 		{
+			System.gc();
 			time_in = System.currentTimeMillis();
 			for(int x = 0; x<subLoops; x++)
 				testHash.put(random.nextInt(), "ABC" + x + y);	
@@ -152,6 +157,7 @@ public class stress_test {
 
 		for(int x = 1; x<=run_count; x++)
 		{
+			//System.gc();
 			runtime[x-1] = meanRunTimeFastSort(5, 200*x, 100);
 			System.out.print(".");
 			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
@@ -170,6 +176,7 @@ public class stress_test {
 
 		for(int x = 1; x<=run_count; x++)
 		{
+			//System.gc();
 			runtime[x-1] = meanRunTimeSlowSort(5, 100*x, 100);
 			System.out.printf(".");
 			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
@@ -188,6 +195,7 @@ public class stress_test {
 		
 		for(int x = 0; x<numLoops; x++)
 		{
+			System.gc();
 			time_in = System.currentTimeMillis();
 			ArrayList<Integer> sortedKey = MyHashTable.fastSort(testHash);
 			time_used[x] = System.currentTimeMillis() - time_in;
@@ -205,6 +213,7 @@ public class stress_test {
 		
 		for(int x = 0; x<numLoops; x++)
 		{
+			System.gc();
 			time_in = System.currentTimeMillis();
 			ArrayList<Integer> sortedKey = MyHashTable.slowSort(testHash);
 			time_used[x] = System.currentTimeMillis() - time_in;
@@ -233,11 +242,12 @@ public class stress_test {
 		for(int x = 0; x<time.length; x++)
 			ls[0] += Math.pow(time[x] - mean, 2);
 		
-		// O(n): a*n
+		// O(n): a*n + b
 		a = (double)(time_sorted[time_sorted.length-1] - time_sorted[0])/(time_sorted.length);
+		b = time_sorted[0];
 		ls[1] = 0;
 		for(int x = 0; x<time.length; x++)
-			ls[1] += Math.pow(time[x] - (a*x), 2);
+			ls[1] += Math.pow(time[x] - (a*x+b), 2);
 		
 		// O(n*log(n)): a*log
 		a = (double)time_sorted[time_sorted.length-1] / (Math.log(time_sorted.length)) / time_sorted.length;
@@ -250,6 +260,8 @@ public class stress_test {
 		ls[3] = 0;
 		for(int x = 0; x<time.length; x++)
 			ls[3] += Math.pow(time[x] - (a*(x+1)*(x+1)), 2);
+		
+		System.out.println(Arrays.toString(ls));
 		
 		min_index = 0;
 		for(int x= 1; x<ls.length; x++)
