@@ -9,12 +9,49 @@ public class stress_test {
 	
 	public static void main(String[] args)
 	{
-		checkSorting(200, 30); // checks sorting order
-		checkAlgorithmComplexityFastSort(); // checks fastSort algorithm complexity
-		checkAlgorithmComplexitySlowSort(); // same engine, checks slowSort algorithm complexity
-		checkAlgorithmComplexityPut();
-		testPutGet();
+		//testPutGet();
+		//checkSorting(200, 30); // checks sorting order
+		
+		//checkAlgorithmComplexityFastSort(); // checks fastSort algorithm complexity
+		//checkAlgorithmComplexitySlowSort(); // same engine, checks slowSort algorithm complexity
+		//checkAlgorithmComplexityPut();
+		checkAlgorithmComplexityValues();
     }
+	
+	public static void checkAlgorithmComplexityValues()
+	{
+		System.out.printf("-> Checking algorithm complexity of values ");
+		
+		int run_count = 30;
+		long runtime[] = new long[run_count];
+
+		for(int x = 1; x<=run_count; x++)
+		{
+			runtime[x-1] = meanRunTimeValues(5, 200*x, 100);
+			System.out.print(".");
+			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
+		}
+		System.out.println("done!");
+		System.out.printf("Average run time of values: ");
+		System.out.println(checkAlgorithmComplexity(runtime) +  "\n");
+	}
+	
+	public static long meanRunTimeValues(int numLoops, int numElements, int str_length)
+	{
+		long time_used[] = new long[numLoops];
+		long time_in;
+		MyHashTable<Integer, String> testHash;
+		testHash = fillHashTable(numElements, str_length); 
+		
+		for(int x = 0; x<numLoops; x++)
+		{
+			time_in = System.currentTimeMillis();
+			ArrayList<String> values = testHash.values();
+			time_used[x] = System.currentTimeMillis() - time_in;
+		}
+		Arrays.sort(time_used, 0, time_used.length-1);
+		return time_used[time_used.length/2];
+	}
 	
 	public static void testPutGet()
 	{
