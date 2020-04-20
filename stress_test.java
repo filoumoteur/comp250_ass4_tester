@@ -9,16 +9,105 @@ public class stress_test {
 	
 	public static void main(String[] args)
 	{
-		checkSorting(200, 30); // checks sorting order
-		checkAlgorithmComplexityFastSort(); // checks fastSort algorithm complexity
+		//checkSorting(200, 30); // checks sorting order
+		//checkAlgorithmComplexityFastSort(); // checks fastSort algorithm complexity
 		//checkAlgorithmComplexitySlowSort(); // same engine, checks slowSort algorithm complexity
+		//testPutGet();
+		checkAlgorithmComplexityPut();
     }
+	
+	public static void testPutGet()
+	{
+		MyHashTable<Integer, String> table = new MyHashTable<Integer, String>(10);
+		boolean test_failed = false;
+		final int nloops = 200;
+		
+		for(int x = 0; x<nloops; x++)
+		{
+			if(table.put(x*10, "abc" + x) != null) // 10*x is there to create collisions in the hashtable
+				test_failed = true;
+		}
+		
+		if(test_failed)
+			System.out.println("MyHashTable.put returns non-null value when it should return null value");
+		else
+			System.out.println("MyHashTable.put correctly returns null value when adding different keys");
+		
+		test_failed = false;
+		for(int x = 0; x<nloops; x++)
+		{
+			if(!table.put(x*10, "cde" + x).equals("abc" + x))
+				test_failed = true;
+		}
+		if(test_failed)
+			System.out.println("MyHashTable.put doesn't return the old value when overwriting a key");
+		else
+			System.out.println("MyHashTable.put correctly returns the old value when overwriting a key");
+		
+		test_failed = false;
+		for(int x = 0; x<nloops; x++)
+		{
+			if(!table.get(x*10).equals("cde" + x))
+				test_failed = true;
+		}
+		if(test_failed)
+			System.out.println("MyHashTable.get doesn't return the stored value at a given key");
+		else
+			System.out.println("MyHashTable.get correctly returns value stored at a given key");
+		
+		test_failed = false;
+		for(int x = 0; x<nloops; x++)
+		{
+			if(table.get(x*10+1) != null)
+				test_failed = true;
+		}
+		if(test_failed)
+			System.out.println("MyHashTable.get doesn't return null to a non-existant key");
+		else
+			System.out.println("MyHashTable.get correctly returns null to a non-existant key");
+	}
+	
+	public static void checkAlgorithmComplexityPut()
+	{
+		System.out.printf("-> Checking algorithm complexity of MyHashTable.put ");
+		
+		int run_count = 30;
+		long runtime[] = new long[run_count];
+
+		for(int x = 1; x<=run_count; x++)
+		{
+			runtime[x-1] = meanRunTimePut(10*x, 5000);
+			System.out.print(".");
+			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
+		}
+		System.out.println("done!");
+		System.out.printf("Average run time of MyHashTable.put: ");
+		System.out.println(checkAlgorithmComplexity(runtime) +  "\n");
+	}
+	
+	public static long meanRunTimePut(int numLoops, int subLoops)
+	{
+		long time_used[] = new long[numLoops];
+		long time_in;
+		MyHashTable<Integer, String> testHash = new MyHashTable<Integer, String>(subLoops*2);
+		
+		for(int y = 0; y<numLoops; y++)
+		{
+			time_in = System.currentTimeMillis();
+			for(int x = 0; x<subLoops; x++)
+				testHash.put(random.nextInt(), "ABC" + x + y);	
+			
+			time_used[y] = System.currentTimeMillis() - time_in;
+		}
+		Arrays.sort(time_used, 0, time_used.length-1);
+		return time_used[time_used.length/2];
+	}
 	
 	public static void checkAlgorithmComplexityFastSort()
 	{
-		System.out.printf("-> Checking algorithm complexity of fastSort ");
+		System.out.printf("-> Checking algorithm complexity of put ");
 		
-		int run_count = 150;
+		int run_count = 10000;
 		long runtime[] = new long[run_count];
 
 		for(int x = 1; x<=run_count; x++)
