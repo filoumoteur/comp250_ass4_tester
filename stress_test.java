@@ -9,15 +9,17 @@ public class stress_test {
 	
 	public static void main(String[] args)
 	{
-		//checkSorting(200, 30); // checks sorting order
-		//checkAlgorithmComplexityFastSort(); // checks fastSort algorithm complexity
-		//checkAlgorithmComplexitySlowSort(); // same engine, checks slowSort algorithm complexity
-		//testPutGet();
+		checkSorting(200, 30); // checks sorting order
+		checkAlgorithmComplexityFastSort(); // checks fastSort algorithm complexity
+		checkAlgorithmComplexitySlowSort(); // same engine, checks slowSort algorithm complexity
 		checkAlgorithmComplexityPut();
+		testPutGet();
     }
 	
 	public static void testPutGet()
 	{
+		System.out.println("-> Cheking good working of MyHashTable.put and get");
+		
 		MyHashTable<Integer, String> table = new MyHashTable<Integer, String>(10);
 		boolean test_failed = false;
 		final int nloops = 200;
@@ -62,16 +64,16 @@ public class stress_test {
 				test_failed = true;
 		}
 		if(test_failed)
-			System.out.println("MyHashTable.get doesn't return null to a non-existant key");
+			System.out.println("MyHashTable.get doesn't return null to a non-existant key\n");
 		else
-			System.out.println("MyHashTable.get correctly returns null to a non-existant key");
+			System.out.println("MyHashTable.get correctly returns null to a non-existant key\n");
 	}
 	
 	public static void checkAlgorithmComplexityPut()
 	{
 		System.out.printf("-> Checking algorithm complexity of MyHashTable.put ");
 		
-		int run_count = 30;
+		int run_count = 20;
 		long runtime[] = new long[run_count];
 
 		for(int x = 1; x<=run_count; x++)
@@ -105,14 +107,14 @@ public class stress_test {
 	
 	public static void checkAlgorithmComplexityFastSort()
 	{
-		System.out.printf("-> Checking algorithm complexity of put ");
+		System.out.printf("-> Checking algorithm complexity of fastSort ");
 		
-		int run_count = 10000;
+		int run_count = 70;
 		long runtime[] = new long[run_count];
 
 		for(int x = 1; x<=run_count; x++)
 		{
-			runtime[x-1] = meanRunTimeFastSort(5, 100*x, 100);
+			runtime[x-1] = meanRunTimeFastSort(5, 200*x, 100);
 			System.out.print(".");
 			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
 		}
