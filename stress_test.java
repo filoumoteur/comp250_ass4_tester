@@ -22,15 +22,16 @@ public class stress_test {
 	{
 		System.out.printf("-> Checking algorithm complexity of values ");
 		
-		int run_count = 30;
+		int run_count = 35;
 		long runtime[] = new long[run_count];
-
+	
 		for(int x = 1; x<=run_count; x++)
 		{
-			runtime[x-1] = meanRunTimeValues(5, 200*x, 100);
-			System.out.print(".");
-			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
+			runtime[x-1] = meanRunTimeValues(5, 1500*x, 100);
+			//System.out.print(".");
+			System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
 		}
+		
 		System.out.println("done!");
 		System.out.printf("Average run time of values: ");
 		System.out.println(checkAlgorithmComplexity(runtime) +  "\n");
@@ -218,7 +219,7 @@ public class stress_test {
 		long ls[] = new long[4];
 		long time_sorted[] = new long[time.length];
 		long mean;
-		double a;
+		double a, b;
 		String[] complexity = {"O(1)", "O(n)", "O(n*log(n))", "O(n^2)"};
 		
 		for(int x = 0; x<time.length; x++)
@@ -233,22 +234,24 @@ public class stress_test {
 			ls[0] += Math.pow(time[x] - mean, 2);
 		
 		// O(n): a*n
-		a = (time_sorted[time_sorted.length-1] - time_sorted[0])/(time_sorted.length);
+		a = (double)(time_sorted[time_sorted.length-1] - time_sorted[0])/(time_sorted.length);
 		ls[1] = 0;
 		for(int x = 0; x<time.length; x++)
 			ls[1] += Math.pow(time[x] - (a*x), 2);
 		
 		// O(n*log(n)): a*log
-		a = time_sorted[time_sorted.length-1] / (Math.log(time_sorted.length)) / time_sorted.length;
+		a = (double)time_sorted[time_sorted.length-1] / (Math.log(time_sorted.length)) / time_sorted.length;
 		ls[2] = 0;
 		for(int x = 0; x<time.length; x++)
 			ls[2] += Math.pow(time[x] - (a*(x+1)*Math.log(x+1)), 2);
 		
 		// O(n^2): a*n^2 
-		a = time_sorted[time_sorted.length-1] / Math.pow(time_sorted.length, 2);
+		a = (double)time_sorted[time_sorted.length-1] / Math.pow(time_sorted.length, 2);
 		ls[3] = 0;
 		for(int x = 0; x<time.length; x++)
 			ls[3] += Math.pow(time[x] - (a*(x+1)*(x+1)), 2);
+		
+		System.out.println(Arrays.toString(ls));
 		
 		min_index = 0;
 		for(int x= 1; x<ls.length; x++)
