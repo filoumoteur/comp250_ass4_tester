@@ -12,33 +12,29 @@ public class stress_test {
 		testPutGet();
 		checkSorting(200, 30); // checks sorting order
 		
-		
 		checkAlgorithmComplexityFastSort(); // checks fastSort algorithm complexity
 		checkAlgorithmComplexitySlowSort(); // same engine, checks slowSort algorithm complexity
 		checkAlgorithmComplexityPut();
 		checkAlgorithmComplexityValues();
-    }
-	
+	}
 	public static void checkAlgorithmComplexityValues()
 	{
 		System.out.printf("-> Checking algorithm complexity of values ");
 		
-		int run_count = 40;
+		int run_count = 10;
 		long runtime[] = new long[run_count];
 	
 		for(int x = 1; x<=run_count; x++)
 		{
-			//System.gc();
-			runtime[x-1] = meanRunTimeValues(5, 1500*x, 100);
+			runtime[x-1] = meanRunTimeValues(20, (int)Math.pow(2, x), 100);
 			System.out.print(".");
-			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
+			//System.out.println("run " + x + ": "+ runtime[x-1] + " us");
 		}
 		
 		System.out.println("done!");
 		System.out.printf("Average run time of values: ");
 		System.out.println(checkAlgorithmComplexity(runtime) +  "\n");
 	}
-	
 	public static long meanRunTimeValues(int numLoops, int numElements, int str_length)
 	{
 		long time_used[] = new long[numLoops];
@@ -49,14 +45,15 @@ public class stress_test {
 		for(int x = 0; x<numLoops; x++)
 		{
 			System.gc();
-			time_in = System.currentTimeMillis();
+			//time_in = System.currentTimeMillis();
+			time_in = System.nanoTime()/1000;
 			ArrayList<String> values = testHash.values();
-			time_used[x] = System.currentTimeMillis() - time_in;
+			//time_used[x] = System.currentTimeMillis() - time_in;
+			time_used[x] = System.nanoTime()/1000 - time_in;
 		}
 		Arrays.sort(time_used, 0, time_used.length-1);
 		return time_used[time_used.length/2];
 	}
-	
 	public static void testPutGet()
 	{
 		System.out.println("-> Cheking good working of MyHashTable.put and get");
@@ -109,40 +106,39 @@ public class stress_test {
 		else
 			System.out.println("MyHashTable.get correctly returns null to a non-existant key\n");
 	}
-	
-	public static void checkAlgorithmComplexityPut()
+	public static void checkAlgorithmComplexityPut() // can't make sense of this method. How should a O(1) function grow?
 	{
 		System.out.printf("-> Checking algorithm complexity of MyHashTable.put ");
 		
 		int run_count = 20;
 		long runtime[] = new long[run_count];
 
+		for(int x = 0; x<4; x++) // seems to fix the first redundant pts in the collection of timing..
+			meanRunTimePut(20, 200);
+		
 		for(int x = 1; x<=run_count; x++)
 		{
-			//System.gc();
-			runtime[x-1] = meanRunTimePut(10*x, 5000);
+			runtime[x-1] = meanRunTimePut(20, 200);
 			System.out.print(".");
-			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
+			//System.out.println("run " + x + ": "+ runtime[x-1] + " us");
 		}
 		System.out.println("done!");
 		System.out.printf("Average run time of MyHashTable.put: ");
 		System.out.println(checkAlgorithmComplexity(runtime) +  "\n");
 	}
-	
 	public static long meanRunTimePut(int numLoops, int subLoops)
 	{
 		long time_used[] = new long[numLoops];
 		long time_in;
-		MyHashTable<Integer, String> testHash = new MyHashTable<Integer, String>(subLoops*2);
+		MyHashTable<Integer, String> testHash = new MyHashTable<Integer, String>(subLoops*10);
 		
 		for(int y = 0; y<numLoops; y++)
 		{
-			System.gc();
-			time_in = System.currentTimeMillis();
+			time_in = System.nanoTime()/1000;
 			for(int x = 0; x<subLoops; x++)
 				testHash.put(random.nextInt(), "ABC" + x + y);	
 			
-			time_used[y] = System.currentTimeMillis() - time_in;
+			time_used[y] = System.nanoTime()/1000 - time_in;
 		}
 		Arrays.sort(time_used, 0, time_used.length-1);
 		return time_used[time_used.length/2];
@@ -152,15 +148,14 @@ public class stress_test {
 	{
 		System.out.printf("-> Checking algorithm complexity of fastSort ");
 		
-		int run_count = 70;
+		int run_count = 16;
 		long runtime[] = new long[run_count];
 
 		for(int x = 1; x<=run_count; x++)
 		{
-			//System.gc();
-			runtime[x-1] = meanRunTimeFastSort(5, 200*x, 100);
+			runtime[x-1] = meanRunTimeFastSort(5, (int)Math.pow(2, x), 100);
 			System.out.print(".");
-			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
+			//System.out.println("run " + x + ": "+ runtime[x-1] + " us");
 		}
 		System.out.println("done!");
 		System.out.printf("Average run time of fastSort: ");
@@ -171,15 +166,14 @@ public class stress_test {
 	{
 		System.out.printf("-> Checking algorithm complexity of slowSort ");
 		
-		int run_count = 35;
+		int run_count = 12;
 		long runtime[] = new long[run_count];
 
 		for(int x = 1; x<=run_count; x++)
 		{
-			//System.gc();
-			runtime[x-1] = meanRunTimeSlowSort(5, 100*x, 100);
+			runtime[x-1] = meanRunTimeSlowSort(5, (int)Math.pow(2, x), 100);
 			System.out.printf(".");
-			//System.out.println("run " + x + ": "+ runtime[x-1] + " ms");
+			//System.out.println("run " + x + ": "+ runtime[x-1] + " us");
 		}
 		System.out.println("done!");
 		System.out.printf("Average run time of slowSort: ");
@@ -195,10 +189,9 @@ public class stress_test {
 		
 		for(int x = 0; x<numLoops; x++)
 		{
-			System.gc();
-			time_in = System.currentTimeMillis();
+			time_in = System.nanoTime()/1000;
 			ArrayList<Integer> sortedKey = MyHashTable.fastSort(testHash);
-			time_used[x] = System.currentTimeMillis() - time_in;
+			time_used[x] = System.nanoTime()/1000 - time_in;
 		}
 		Arrays.sort(time_used, 0, time_used.length-1);
 		return time_used[time_used.length/2];
@@ -213,65 +206,68 @@ public class stress_test {
 		
 		for(int x = 0; x<numLoops; x++)
 		{
-			System.gc();
-			time_in = System.currentTimeMillis();
+			time_in = System.nanoTime()/1000;
 			ArrayList<Integer> sortedKey = MyHashTable.slowSort(testHash);
-			time_used[x] = System.currentTimeMillis() - time_in;
+			time_used[x] = System.nanoTime()/1000 - time_in;
 		}
 		Arrays.sort(time_used, 0, time_used.length-1);
 		return time_used[time_used.length/2];
 	}
 	
-	public static String checkAlgorithmComplexity(long time[]) // least squares method
+	public static String checkAlgorithmComplexity(long y[]) // least squares method
 	{
 		int min_index;
 		long ls[] = new long[4];
-		long time_sorted[] = new long[time.length];
-		long mean;
+		long y_sorted[] = new long[y.length];
+		long x[] = new long[y.length];
 		double a, b;
 		String[] complexity = {"O(1)", "O(n)", "O(n*log(n))", "O(n^2)"};
 		
-		for(int x = 0; x<time.length; x++)
-			time_sorted[x] = time[x];
-		Arrays.sort(time_sorted, 0, time_sorted.length-1);
-		mean = time_sorted[time_sorted.length/2];
+		for(int i = 0; i<y.length; i++)
+		{
+			y_sorted[i] = y[i];
+			x[i] = (long)Math.pow(2, i);
+		}
+		Arrays.sort(y_sorted, 0, y_sorted.length-1);
 		
 		// O(1): b
 		// b is approximated with the mean of the time values
 		ls[0] = 0;
-		for(int x = 0; x<time.length; x++)
-			ls[0] += Math.pow(time[x] - mean, 2);
+		b = y_sorted[y_sorted.length/2];
+		for(int i = 0; i<y.length; i++)
+			ls[0] += Math.pow(y[i] - b, 2);
 		
 		// O(n): a*n + b
-		a = (double)(time_sorted[time_sorted.length-1] - time_sorted[0])/(time_sorted.length);
-		b = time_sorted[0];
+		b = y_sorted[0];
+		a = (double)(y[y.length-1] - b)/(x[x.length-1]-x[0]);
 		ls[1] = 0;
-		for(int x = 0; x<time.length; x++)
-			ls[1] += Math.pow(time[x] - (a*x+b), 2);
+		for(int i = 1; i<y.length; i++)
+			ls[1] += Math.pow(y[i] - (a*x[i]+b), 2);
 		
-		// O(n*log(n)): a*log
-		a = (double)time_sorted[time_sorted.length-1] / (Math.log(time_sorted.length)) / time_sorted.length;
+		// O(n*log(n)): a*n*log(b*n)
+		b = Math.pow(x[x.length-1], (double)y[y.length-2]*x[x.length-1]/(y[y.length-1]*x[x.length-2] - y[y.length-2]*x[x.length-1]));
+		b = b/Math.pow(x[x.length-2], (double)y[y.length-1]*x[x.length-2]/(y[y.length-1]*x[x.length-2] - y[y.length-2]*x[x.length-1]));
+		a = (double)y[y.length-2]/x[x.length-2]/Math.log(b*x[x.length-2]);
 		ls[2] = 0;
-		for(int x = 0; x<time.length; x++)
-			ls[2] += Math.pow(time[x] - (a*(x+1)*Math.log(x+1)), 2);
+		for(int i = 0; i<y.length; i++)
+			ls[2] += Math.pow(y[i] - (a*x[i]*Math.log(b*x[i])), 2);
 		
-		// O(n^2): a*n^2 
-		a = (double)time_sorted[time_sorted.length-1] / Math.pow(time_sorted.length, 2);
+		// O(n^2): a*n^2
+		a = (double)(y[y.length-1]) / Math.pow(x[x.length-1], 2);
 		ls[3] = 0;
-		for(int x = 0; x<time.length; x++)
-			ls[3] += Math.pow(time[x] - (a*(x+1)*(x+1)), 2);
+		for(int i = 0; i<y.length; i++)
+			ls[3] += Math.pow(y[i] - (a*x[i]*x[i]), 2);
 		
-		System.out.println(Arrays.toString(ls));
+		//System.out.println(Arrays.toString(ls));
 		
 		min_index = 0;
-		for(int x= 1; x<ls.length; x++)
+		for(int i = 1; i<ls.length; i++)
 		{
-			if(ls[x] < ls[min_index])
-				min_index = x;
+			if(ls[i] < ls[min_index])
+				min_index = i;
 		}	
 		return complexity[min_index];
 	}
-	
 	public static void checkSorting(int entries, int str_length)
 	{
 		System.out.printf("-> Checking fastSort output order ...");
@@ -297,7 +293,6 @@ public class stress_test {
     	else
     		System.out.println("No error found in the sorted array\n");
 	}
-	
 	public static MyHashTable<Integer, String> fillHashTable(int entries, int str_length)
 	{
 		MyHashTable<Integer, String> table = new MyHashTable<Integer, String>(10);
@@ -307,7 +302,6 @@ public class stress_test {
 		
 		return table;
 	}
-	
 	public static String randomString(int length)
 	{
 		String result = "";
@@ -316,6 +310,5 @@ public class stress_test {
 		
 		return result;
 	}
-	
 }
 
