@@ -1,13 +1,16 @@
-package Starter_code;
+package tester;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import project.MyHashTable;
+
 import java.util.Arrays;
 
-public class stress_test {
+public class AlgoComplexity {
 	static Random random = new Random();
 	
-	public static void main(String[] args)
+	/*public static void main(String[] args)
 	{
 		testPutGet();
 		checkSorting(200, 30); // checks sorting order
@@ -16,17 +19,17 @@ public class stress_test {
 		checkAlgorithmComplexitySlowSort(); // same engine, checks slowSort algorithm complexity
 		checkAlgorithmComplexityPut();
 		checkAlgorithmComplexityValues();
-	}
+	}*/
 	public static void checkAlgorithmComplexityValues()
 	{
 		System.out.printf("-> Checking algorithm complexity of values ");
 		
-		int run_count = 10;
+		int run_count = 15;
 		long runtime[] = new long[run_count];
 	
 		for(int x = 1; x<=run_count; x++)
 		{
-			runtime[x-1] = meanRunTimeValues(20, (int)Math.pow(2, x), 100);
+			runtime[x-1] = meanRunTimeValues(20, (int)Math.pow(1.5, x), 100);
 			System.out.print(".");
 			//System.out.println("run " + x + ": "+ runtime[x-1] + " us");
 		}
@@ -40,71 +43,19 @@ public class stress_test {
 		long time_used[] = new long[numLoops];
 		long time_in;
 		MyHashTable<Integer, String> testHash;
-		testHash = fillHashTable(numElements, str_length); 
+		testHash = Utils.filledHashTable(numElements, str_length); 
 		
 		for(int x = 0; x<numLoops; x++)
 		{
 			System.gc();
 			//time_in = System.currentTimeMillis();
 			time_in = System.nanoTime()/1000;
-			ArrayList<String> values = testHash.values();
+			testHash.values();
 			//time_used[x] = System.currentTimeMillis() - time_in;
 			time_used[x] = System.nanoTime()/1000 - time_in;
 		}
 		Arrays.sort(time_used, 0, time_used.length-1);
 		return time_used[time_used.length/2];
-	}
-	public static void testPutGet()
-	{
-		System.out.println("-> Cheking good working of MyHashTable.put and get");
-		
-		MyHashTable<Integer, String> table = new MyHashTable<Integer, String>(10);
-		boolean test_failed = false;
-		final int nloops = 200;
-		
-		for(int x = 0; x<nloops; x++)
-		{
-			if(table.put(x*10, "abc" + x) != null) // 10*x is there to create collisions in the hashtable
-				test_failed = true;
-		}
-		
-		if(test_failed)
-			System.out.println("MyHashTable.put returns non-null value when it should return null value");
-		else
-			System.out.println("MyHashTable.put correctly returns null value when adding different keys");
-		
-		test_failed = false;
-		for(int x = 0; x<nloops; x++)
-		{
-			if(!table.put(x*10, "cde" + x).equals("abc" + x))
-				test_failed = true;
-		}
-		if(test_failed)
-			System.out.println("MyHashTable.put doesn't return the old value when overwriting a key");
-		else
-			System.out.println("MyHashTable.put correctly returns the old value when overwriting a key");
-		
-		test_failed = false;
-		for(int x = 0; x<nloops; x++)
-		{
-			if(!table.get(x*10).equals("cde" + x))
-				test_failed = true;
-		}
-		if(test_failed)
-			System.out.println("MyHashTable.get doesn't return the stored value at a given key");
-		else
-			System.out.println("MyHashTable.get correctly returns value stored at a given key");
-		
-		test_failed = false;
-		for(int x = 0; x<nloops; x++)
-		{
-			if(table.get(x*10+1) != null)
-				test_failed = true;
-		}
-		if(test_failed)
-			System.out.println("MyHashTable.get doesn't return null to a non-existant key\n");
-		else
-			System.out.println("MyHashTable.get correctly returns null to a non-existant key\n");
 	}
 	public static void checkAlgorithmComplexityPut() // can't make sense of this method. How should a O(1) function grow?
 	{
@@ -148,7 +99,7 @@ public class stress_test {
 	{
 		System.out.printf("-> Checking algorithm complexity of fastSort ");
 		
-		int run_count = 16;
+		int run_count = 17;
 		long runtime[] = new long[run_count];
 
 		for(int x = 1; x<=run_count; x++)
@@ -190,7 +141,7 @@ public class stress_test {
 		for(int x = 0; x<numLoops; x++)
 		{
 			time_in = System.nanoTime()/1000;
-			ArrayList<Integer> sortedKey = MyHashTable.fastSort(testHash);
+			MyHashTable.fastSort(testHash);
 			time_used[x] = System.nanoTime()/1000 - time_in;
 		}
 		Arrays.sort(time_used, 0, time_used.length-1);
@@ -207,7 +158,7 @@ public class stress_test {
 		for(int x = 0; x<numLoops; x++)
 		{
 			time_in = System.nanoTime()/1000;
-			ArrayList<Integer> sortedKey = MyHashTable.slowSort(testHash);
+			MyHashTable.slowSort(testHash);
 			time_used[x] = System.nanoTime()/1000 - time_in;
 		}
 		Arrays.sort(time_used, 0, time_used.length-1);
@@ -311,4 +262,3 @@ public class stress_test {
 		return result;
 	}
 }
-
