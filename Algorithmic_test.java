@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Algorithmic_test {
+public class HashTableTest{
 	private final int NUMBER_OF_ENTRIES = 100;
 	private MyHashTable<String, Integer> myTable = new MyHashTable<String, Integer>(1);
 	private Random rand = new Random();
