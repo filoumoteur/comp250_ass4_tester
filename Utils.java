@@ -9,6 +9,7 @@ import project.Twitter;
 
 public class Utils {
 	static Random random = new Random();
+	static int author_nb = 0;
 	
 	public static MyHashTable<Integer, String> filledHashTable(int numEntries, int str_length)
 	{
@@ -27,11 +28,18 @@ public class Utils {
 		
 		return result;
 	}
-	
-	public static Twitter filledTwitter()
+	public static Tweet randomTweet()
 	{
-		ArrayList<String> stopWords = new ArrayList<String>();
-		return new Twitter(initTweetList(), stopWords);
+		return new Tweet("USER"+random.nextInt()+"_"+author_nb,"2010-"+Math.abs(random.nextInt())%9+Math.abs(random.nextInt())%9+"-04 14:"+Math.abs(random.nextInt())%9+Math.abs(random.nextInt())%9+":"+Math.abs(random.nextInt())%9+Math.abs(random.nextInt())%9, "MESSAGE" + randomString(130));
+	}
+	public static Twitter filledTwitter(int tweet_count, ArrayList<String> stopWords)
+	{
+		ArrayList<Tweet> tweet = new ArrayList<Tweet>();
+		
+		for(int x= 0; x<tweet_count; x++)
+			tweet.add(Utils.randomTweet());
+		
+		return new Twitter(tweet, stopWords);
 	}
 
 	/**

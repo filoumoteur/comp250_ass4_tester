@@ -4,6 +4,7 @@ public class Tester {
 
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
+		
 		System.out.println("=========================================================");
 		System.out.println("= Welcome to COMP250 Final Project of Winter 20 tester! =");
 		System.out.println("= Credit goes to: @FilouMoteur and @AdamMigliore        =");
@@ -17,7 +18,7 @@ public class Tester {
 		HashMapTest.Keys();
 		HashMapTest.Values();
 		HashMapTest.FastSort();
-
+		
 		System.out.println("=========================================================");
 		System.out.println("=                    Testing Twitter                    =");
 		System.out.println("=========================================================\n");
@@ -32,6 +33,10 @@ public class Tester {
 		AlgoComplexity.checkAlgorithmComplexityFastSort();
 		AlgoComplexity.checkAlgorithmComplexityPut();
 		AlgoComplexity.checkAlgorithmComplexityValues();
-		
+		AlgoComplexity.checkAlgorithmComplexityTwitterConstructor();
+		AlgoComplexity.checkAlgorithmComplexityAddTweet();
+		AlgoComplexity.checkAlgorithmComplexityLatest();
+		AlgoComplexity.checkAlgorithmComplexityDate();
+		AlgoComplexity.checkAlgorithmComplexityTrending();
 	}
 }

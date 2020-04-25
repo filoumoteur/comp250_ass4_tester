@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import project.MyHashTable;
 
 public class HashMapTest {
-	private final static int NUMBER_OF_ENTRIES = 200;
+	private final static int NUMBER_OF_ENTRIES = 20;
 
 	public static void PutGetRemove() throws AssertEqualsException {
 		System.out.println("-> Cheking good working of MyHashTable.put, get and remove");
@@ -30,7 +30,6 @@ public class HashMapTest {
 			if(table.put(x*10, "abc" + x) != null) // 10*x is there to create collisions in the hashtable
 				test_failed = true;
 		}
-		
 		if(test_failed)
 			System.out.println("MyHashTable.put returns non-null value when it should return null value");
 		else

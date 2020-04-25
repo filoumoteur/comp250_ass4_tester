@@ -7,7 +7,7 @@ import project.Twitter;
 
 public class TwitterTest {
 	public static void AddTweet() throws AssertEqualsException {
-		Twitter twitter = Utils.filledTwitter();
+		Twitter twitter = Utils.filledTwitter(100, new ArrayList<String>());
 
 		System.out.print("-> Checking Twitter.addTweet()");
 		// Test 1: add a null tweet
@@ -32,7 +32,7 @@ public class TwitterTest {
 		Twitter twitter = new Twitter( new ArrayList<Tweet>(), new ArrayList<String>());
 		assertNull(twitter.latestTweetByAuthor("Adam"));
 		//Test 2: null author
-		twitter = Utils.filledTwitter();
+		Utils.filledTwitter(100, new ArrayList<String>());
 		System.out.print(".");
 		assertNull(twitter.latestTweetByAuthor(null));
 		//Test 3: not an author
@@ -56,7 +56,7 @@ public class TwitterTest {
 		Twitter twitter = new Twitter( new ArrayList<Tweet>(), new ArrayList<String>());
 		assertNull(twitter.tweetsByDate(null));
 		//Test 2: date is non-existent
-		twitter = Utils.filledTwitter();
+		Utils.filledTwitter(100, new ArrayList<String>());
 		System.out.print(".");
 		assertNull(twitter.tweetsByDate("1990-03-03"));
 		//Test 3: normal query
